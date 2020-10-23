@@ -1,2 +1,2 @@
 # rust-book-codes
-chapters of rustlang's book
+all code in the chapters of rustlang's book
