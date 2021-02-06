@@ -8,11 +8,11 @@ pub fn run ( config: Config ) -> Result<(), Box<dyn Error>>
 
     let results = if config.case_sensitive 
     {
-        search( &config.query, &contents )
+        search( &config.query, &contents, true )
     }
     else 
     {
-        search_case_insensitive ( &config.query, &contents )
+        search( &config.query, &contents, false)
     };
 
     for line in results
@@ -23,20 +23,17 @@ pub fn run ( config: Config ) -> Result<(), Box<dyn Error>>
     Ok(())
 }
 
-pub fn search <'a> ( query: &str, contents: &'a str ) -> Vec<&'a str> 
+pub fn search <'a> ( query: &str, contents: &'a str, sensitive: bool ) -> Vec<&'a str> 
 {
-    contents
-        .lines()
-        .filter(|line| line.contains(query))
-        .collect()
-}
+    let lines = contents.lines();
 
-pub fn search_case_insensitive <'a> ( query: &str, contents: &'a str) -> Vec<&'a str>
-{
-    contents
-        .lines()
-        .filter(|line| line.to_lowercase().contains(&query))
-        .collect()
+    if sensitive {
+        return lines.filter(|line| line.contains(query)).collect()
+    }
+    else {
+        return lines.filter(|line| line.to_lowercase().contains(query)).collect()
+    }
+
 }
 
 pub struct Config 
